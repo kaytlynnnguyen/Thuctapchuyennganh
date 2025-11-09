@@ -1,10 +1,21 @@
 var createError = require('http-errors');
 var express = require('express');
+const { engine } = require('express-handlebars');
+var app = express();
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+app.engine(
+    'hbs',
+   engine({
+       extname: '.hbs',
+       defaultLayout: 'layout',
+       partialsDir: path.join(__dirname, 'views' , 'partials'),
+       layoutsDir: path.join(__dirname, 'views' , 'layouts'),
+   })
+);
 var indexRouter = require('./routes/index');
+var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
 var blog_detailRouter = require('./routes/blog_details');
 var blogRouter = require('./routes/blog');
@@ -13,6 +24,7 @@ var anime_watchingRouter = require('./routes/anime_watching');
 var categoriesRouter = require('./routes/categories');
 var loginRouter = require('./routes/login');
 var signupRouter = require('./routes/signup');
+//const {engine, engines} = require("express/lib/application");
 
 var app = express();
 
@@ -27,6 +39,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
+app.use('/admin', adminRouter);
 app.use('/blog_details' , blog_detailRouter);
 app.use('/blog' , blogRouter);
 app.use('/anime_details', anime_detailsRouter);
