@@ -9,25 +9,14 @@ app.engine(
     'hbs',
    engine({
        extname: '.hbs',
-       defaultLayout: 'layout',
+       defaultLayout: 'home',
        partialsDir: path.join(__dirname, 'views' , 'partials'),
        layoutsDir: path.join(__dirname, 'views' , 'layouts'),
    })
 );
 var indexRouter = require('./routes/index');
 var adminRouter = require('./routes/admin');
-var usersRouter = require('./routes/users');
-var blog_detailRouter = require('./routes/blog_details');
-var blogRouter = require('./routes/blog');
-var anime_detailsRouter = require('./routes/anime_details');
-var anime_watchingRouter = require('./routes/anime_watching');
-var categoriesRouter = require('./routes/categories');
-var loginRouter = require('./routes/login');
-var signupRouter = require('./routes/signup');
-//const {engine, engines} = require("express/lib/application");
-
-var app = express();
-
+var userRouter = require('./routes/users');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -40,22 +29,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/admin', adminRouter);
-app.use('/blog_details' , blog_detailRouter);
-app.use('/blog' , blogRouter);
-app.use('/anime_details', anime_detailsRouter);
-app.use('/anime_watching', anime_watchingRouter);
-app.use('/categories', categoriesRouter);
-app.use('/login', loginRouter);
-app.use('/signup', signupRouter);
-app.use('/users', usersRouter);
+app.use('/users', userRouter);
 
 
-// catch 404 and forward to error handler
+
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+
 app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
@@ -63,7 +45,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('blog/error');
 });
 
 module.exports = app;
